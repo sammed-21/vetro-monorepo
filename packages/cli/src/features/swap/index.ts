@@ -9,6 +9,7 @@ import { register as maxOut } from "./commands/maxOut.ts";
 import { register as mint } from "./commands/mint.ts";
 import { register as mintFee } from "./commands/mintFee.ts";
 import { register as peggedToken } from "./commands/peggedToken.ts";
+import { register as previewMint } from "./commands/previewMint.ts";
 import { register as price } from "./commands/price.ts";
 import { register as redeemFee } from "./commands/redeemFee.ts";
 import { register as sendToQueue } from "./commands/sendToQueue.ts";
@@ -26,6 +27,7 @@ const swapCommands = [
   mint,
   mintFee,
   peggedToken,
+  previewMint,
   price,
   redeemFee,
   sendToQueue,
