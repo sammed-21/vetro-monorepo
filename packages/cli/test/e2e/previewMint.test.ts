@@ -1,9 +1,21 @@
+import { gatewayAddresses } from "@vetro-protocol/gateway";
+import { previewDeposit } from "@vetro-protocol/gateway/actions";
+import { parseUnits } from "viem";
 import { describe, expect, inject, it } from "vitest";
 
-import { runCli, runCliRaw, swapAmount, usdc, vusd } from "./helpers.ts";
+import {
+  createClients,
+  runCli,
+  runCliRaw,
+  swapAmount,
+  usdc,
+  vusd,
+} from "./helpers.ts";
 
 describe("swap preview-mint", function () {
   const rpcUrl = inject("anvilUrl");
+  const { publicClient } = createClients(rpcUrl);
+  const [gateway] = gatewayAddresses;
 
   const previewMintOnFork = (extra: string[] = []) => [
     "swap",
@@ -17,7 +29,12 @@ describe("swap preview-mint", function () {
     const preview = await runCli(
       previewMintOnFork(["--from", usdc.symbol, "--amount", swapAmount]),
     );
-    expect(preview).toMatch(/^\d+$/);
+    const expected = await previewDeposit(publicClient, {
+      address: gateway,
+      amountIn: parseUnits(swapAmount, usdc.decimals),
+      tokenIn: usdc.address,
+    });
+    expect(preview).toBe(expected.toString());
   });
 
   it("reads the same preview by address as by symbol", async function () {
