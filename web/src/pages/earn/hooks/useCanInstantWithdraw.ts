@@ -25,6 +25,7 @@ export const canInstantWithdrawOptions = ({
         stakingVaultAddress,
       }),
     queryKey: ["can-instant-withdraw", chainId, account, stakingVaultAddress],
+    staleTime: Infinity,
   });
 
 export function useCanInstantWithdraw({
