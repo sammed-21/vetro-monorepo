@@ -281,8 +281,6 @@ describe("handleBlock", function () {
     const stored = TvlTokenHistory.load(usdcId)!;
     assert.assertTrue(!stored.isSet("price"));
     assert.assertTrue(!stored.isSet("unitPrice"));
-
-    mockGetPrice(usdcAddress, BigInt.fromI32(99991000));
   });
 
   test("skips a token whose withdrawable read reverts and records the rest", function () {
@@ -314,8 +312,6 @@ describe("handleBlock", function () {
       "tokenAddress",
       usdtAddressString,
     );
-
-    mockWithdrawable(usdcAddress, BigInt.fromString("258609609875"));
   });
 
   test("records nothing when the treasury read reverts", function () {
@@ -333,9 +329,5 @@ describe("handleBlock", function () {
 
     assert.entityCount("TvlHistory", 0);
     assert.entityCount("TvlTokenHistory", 0);
-
-    createMockedFunction(gatewayAddress, "treasury", "treasury():(address)")
-      .withArgs([])
-      .returns([ethereum.Value.fromAddress(treasuryAddress)]);
   });
 });
