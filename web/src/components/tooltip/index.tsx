@@ -8,6 +8,7 @@ type Props = {
   content: ReactNode;
   stretch?: boolean;
   useParentContainer?: boolean;
+  visible?: boolean;
 };
 
 const getTooltipContainer = (node: HTMLElement) => node.parentElement!;
@@ -20,6 +21,7 @@ export const Tooltip = ({
   content,
   stretch = false,
   useParentContainer = false,
+  visible,
 }: Props) => (
   <RcTooltip
     getTooltipContainer={useParentContainer ? getTooltipContainer : undefined}
@@ -32,6 +34,7 @@ export const Tooltip = ({
     placement="top"
     showArrow={false}
     trigger={["hover"]}
+    visible={visible}
   >
     <div className={`cursor-pointer ${stretch ? "size-full" : "w-fit"}`}>
       {children}

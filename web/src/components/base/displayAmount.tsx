@@ -56,6 +56,7 @@ export const DisplayAmount = function ({
           </span>
         ) : null
       }
+      visible={notZero ? undefined : false}
     >
       <Container>
         <AmountContainer>{`${formattedAmount}${
