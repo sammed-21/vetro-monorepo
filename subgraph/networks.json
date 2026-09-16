@@ -7,6 +7,14 @@
     "sVetBTCStakingVault": {
       "address": "0x0cB9D84d4bcEc8d3D5B2d99a6F07f4605325987e",
       "startBlock": 24931128
+    },
+    "vusdGateway": {
+      "address": "0xDaD503f8B9d42bb7af3AfC588358D30163e4416F",
+      "startBlock": 24625393
+    },
+    "vetBTCGateway": {
+      "address": "0xCBA2Ffa0AC52d7871a4221a871793Eb788013faB",
+      "startBlock": 24931126
     }
   }
 }

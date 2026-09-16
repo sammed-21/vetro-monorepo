@@ -84,3 +84,57 @@ dataSources:
             kind: polling
             every: 300 # blocks in 1h
       file: ./src/earn.ts
+  - kind: ethereum
+    name: vusdGateway
+    network: mainnet
+    source:
+      address: "0xDaD503f8B9d42bb7af3AfC588358D30163e4416F" # VUSD gateway
+      abi: Gateway
+      startBlock: 24625393
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - TvlHistory
+        - TvlTokenHistory
+      abis:
+        - name: Gateway
+          file: ./abis/Gateway.json
+        - name: PeggedToken
+          file: ./abis/PeggedToken.json
+        - name: Treasury
+          file: ./abis/Treasury.json
+      blockHandlers:
+        - handler: handleBlock
+          filter:
+            kind: polling
+            every: 300 # blocks in 1h
+      file: ./src/tvl.ts
+  - kind: ethereum
+    name: vetBTCGateway
+    network: mainnet
+    source:
+      address: "0xCBA2Ffa0AC52d7871a4221a871793Eb788013faB" # vetBTC gateway
+      abi: Gateway
+      startBlock: 24931126
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - TvlHistory
+        - TvlTokenHistory
+      abis:
+        - name: Gateway
+          file: ./abis/Gateway.json
+        - name: PeggedToken
+          file: ./abis/PeggedToken.json
+        - name: Treasury
+          file: ./abis/Treasury.json
+      blockHandlers:
+        - handler: handleBlock
+          filter:
+            kind: polling
+            every: 300 # blocks in 1h
+      file: ./src/tvl.ts
