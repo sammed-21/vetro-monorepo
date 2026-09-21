@@ -10,6 +10,7 @@ import { register as mint } from "./commands/mint.ts";
 import { register as mintFee } from "./commands/mintFee.ts";
 import { register as peggedToken } from "./commands/peggedToken.ts";
 import { register as previewMint } from "./commands/previewMint.ts";
+import { register as previewRedeem } from "./commands/previewRedeem.ts";
 import { register as price } from "./commands/price.ts";
 import { register as redeemFee } from "./commands/redeemFee.ts";
 import { register as sendToQueue } from "./commands/sendToQueue.ts";
@@ -28,6 +29,7 @@ const swapCommands = [
   mintFee,
   peggedToken,
   previewMint,
+  previewRedeem,
   price,
   redeemFee,
   sendToQueue,
