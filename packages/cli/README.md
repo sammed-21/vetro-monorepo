@@ -74,11 +74,11 @@ Every numeric field is a hex `QUANTITY`, so the object can be lifted straight in
 
 ## Token arguments
 
-`--token`, `--from` and `--to` accept either a **symbol** (case-insensitive, e.g. `USDT`) or an **address**. `--from` is the token the operation spends, so it is whitelisted-only on `mint` and pegged-only on `send-to-queue`; `--token` takes either side.
+`--token`, `--from` and `--to` accept either a **symbol** (case-insensitive, e.g. `USDT`) or an **address**. `--from` is the token the operation spends, so it is whitelisted-only on `mint` and pegged-only on `send-to-queue`. `--to` is the token the operation pays out, so it is pegged on `mint` and whitelisted-only on `preview-redeem`. `--token` takes either side.
 
 Because a token belongs to exactly one gateway, the gateway is inferred from the token and never passed explicitly. For the same reason `swap mint --to` is optional — the pegged token is whatever that gateway mints.
 
-`--amount` is in human units; decimals are resolved from the token.
+`--amount` is in human units of the token the operation spends. Its decimals come from `--from` or `--token` when the command takes one. On `preview-redeem` the spent token is the pegged token of the gateway inferred from `--to`, so the decimals come from that pegged token, not from `--to`.
 
 To discover the symbols a gateway takes, run `swap whitelisted-tokens --gateway <addr>` — a gateway-level read, so it takes the gateway explicitly instead of inferring it from a token.
 
