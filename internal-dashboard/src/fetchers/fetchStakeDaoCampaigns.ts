@@ -30,7 +30,7 @@ const isRunning = ({
 const vaultKey = ({ chainId, gauge }: { chainId: number; gauge: Address }) =>
   `${chainId}-${gauge.toLowerCase()}`;
 
-const toVaultsByGauge = (vaults: StakeDaoVault[]) =>
+export const toVaultsByGauge = (vaults: StakeDaoVault[]) =>
   new Map(
     vaults.map((vault) => [
       vaultKey({ chainId: vault.chainId, gauge: vault.gaugeAddress }),
@@ -41,7 +41,7 @@ const toVaultsByGauge = (vaults: StakeDaoVault[]) =>
 // A bribe can target any gauge, whether or not StakeDao has deployed a vault
 // wrapping it, so a missing vault falls back to the gauge's votemarket page
 // rather than dropping the campaign.
-const toPoolCampaign = function ({
+export const toPoolCampaign = function ({
   campaign,
   vaultsByGauge,
 }: {
