@@ -4,7 +4,7 @@
 
 import { getAddress } from "viem";
 
-import type { StakeDaoCampaign } from "./lib/stakeDaoApi";
+import type { StakeDaoCampaign, StakeDaoVault } from "./lib/stakeDaoApi";
 
 type Env = {
   ASSETS: Fetcher;
@@ -145,6 +145,17 @@ const stakeDaoCampaignsUpstream =
   "https://api-v3.stakedao.org/votemarket/curve";
 const stakeDaoCacheSeconds = 3 * 60;
 
+// Deployed StakeDao vaults, keyed by the gauge they wrap, across all chains.
+// This is the "v2" strategies index — the legacy (non-"v2") curve strategies
+// endpoint only covers a small curated set and is missing vaults for newer
+// factory pools (e.g. Curve NG pools like Vetro's), so it under-reports.
+// New vaults deploy rarely, so this is cached far longer than the campaigns
+// list above.
+const stakeDaoVaultsPath = "/api/stakedao/vaults";
+const stakeDaoVaultsUpstream =
+  "https://api.stakedao.org/api/strategies/v2/curve/index.json";
+const stakeDaoVaultsCacheSeconds = 60 * 60;
+
 const jsonResponse = ({
   body,
   status = 200,
@@ -199,6 +210,36 @@ const proxyStakeDaoCampaigns = async function (searchParams: URLSearchParams) {
   });
 };
 
+type StakeDaoStrategy = {
+  chainId: number;
+  gaugeAddress: string;
+  vault: string;
+};
+
+const proxyStakeDaoVaults = async function () {
+  const response = await fetch(stakeDaoVaultsUpstream, {
+    cf: {
+      cacheEverything: true,
+      cacheTtlByStatus: { "200-299": stakeDaoVaultsCacheSeconds, "400-599": 0 },
+    },
+  });
+  if (!response.ok) {
+    return jsonResponse({ body: response.body, status: response.status });
+  }
+  const strategies = (await response.json()) as StakeDaoStrategy[];
+  return jsonResponse({
+    body: JSON.stringify(
+      strategies.map(
+        (strategy): StakeDaoVault => ({
+          chainId: strategy.chainId,
+          gaugeAddress: getAddress(strategy.gaugeAddress),
+          vault: getAddress(strategy.vault),
+        }),
+      ),
+    ),
+  });
+};
+
 type MerklOpportunitiesQuery = {
   campaigns: boolean;
   chainIds: number[];
@@ -247,6 +288,7 @@ const apiHandlers: Record<
 > = {
   [`GET ${stakeDaoCampaignsPath}`]: ({ url }) =>
     proxyStakeDaoCampaigns(url.searchParams),
+  [`GET ${stakeDaoVaultsPath}`]: () => proxyStakeDaoVaults(),
   [`QUERY ${merklOpportunitiesPath}`]: ({ request }) =>
     proxyMerklOpportunities(request),
 };

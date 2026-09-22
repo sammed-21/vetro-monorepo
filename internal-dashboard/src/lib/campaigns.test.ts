@@ -48,7 +48,7 @@ const stakeDaoCampaign = {
   rewardTokenSymbol: "USDC",
   source: "stakeDao",
   totalRewardUsd: 11000,
-  url: "https://votemarket.stakedao.org",
+  url: "https://app.stakedao.org/strategy?protocol=curve&vault=1-0x102A475c8d660fDe678D108DCc6D4A2227661AF2",
   usdPerVote: 0.000065,
   weeklyRewardUsd: 211,
 } satisfies PoolCampaign;
